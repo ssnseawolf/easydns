@@ -2,7 +2,7 @@ network:
   ethernets:
     eth0:
       dhcp4: false
-      addresses: [SERVER_IP_ADDR/16]
+      addresses: [SERVER_IP_ADDR/SERVER_IP_NETMASK_CIDR]
       gateway4: GATEWAY_IP_ADDR
 
   version: 2
