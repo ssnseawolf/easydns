@@ -9,11 +9,8 @@ DNS_SERVER_1="9.9.9.9"
 DNS_SERVER_2="149.112.112.112"
 DNSMASQ_CONFIG_PATH="/home/ssnseawolf/update-blacklist"
 
-# We're modifying spooky bits and must run as root
-sudo -i
-
 # systemd-resolved has a stub listener on port 53 by default. It must go
-sudo echo "DNSStubListener=no" >> /etc/systemd/resolved.conf
+echo "DNSStubListener=no" | sudo tee -a /etc/systemd/resolved.conf
 sudo systemctl restart systemd-resolved
 
 # Install dnsmasq
