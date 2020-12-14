@@ -4,7 +4,7 @@
 # Configuration
 SERVER_IP_ADDR="192.168.0.4"    # The IP address to use for your server. Typically 192.168.0.x or 192.168.1.x
 USERNAME="root" 
-DOMAIN=""                       # If your home network has a domain name, like home.example.com, enter it here
+DOMAIN="None"                       # If your home network has a domain name, like home.example.com, enter it here
 DNS_SERVER_1="9.9.9.9"
 DNS_SERVER_2="149.112.112.112"
 
@@ -12,10 +12,14 @@ DNS_SERVER_2="149.112.112.112"
 sudo curl https://raw.githubusercontent.com/ssnseawolf/easydns-linux/master/dnsmasq.conf > ~/dnsmasq.conf
 
 # Replace variables in our newly downloaded config file
-sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR" ~/dnsmasq.conf
-sed -i "s/DOMAIN/$DOMAIN" ~/dnsmasq.conf
-sed -i "s/DNS_SERVER_1/$DNS_SERVER_1" ~/dnsmasq.conf
-sed -i "s/DNS_SERVER_2/$DNS_SERVER_2" ~/dnsmasq.conf
+sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" ~/dnsmasq.conf
+sed -i "s/DOMAIN/$DOMAIN/" ~/dnsmasq.conf
+sed -i "s/DOMAIN=None//" ~/dnsmasq.conf
+sed -i "s/DNS_SERVER_1/$DNS_SERVER_1/" ~/dnsmasq.conf
+sed -i "s/DNS_SERVER_2/$DNS_SERVER_2/" ~/dnsmasq.conf
+
+# Copy our new dnsmasq config file over
+sudo rsync ~/dnsmasq.conf /etc/dnsmasq.conf --remove-source-files 
 
 # Install dnsmasq
 sudo apt install -y dnsmasq
@@ -24,11 +28,8 @@ sudo apt install -y dnsmasq
 echo "DNSStubListener=no" | sudo tee -a /etc/systemd/resolved.conf
 sudo systemctl restart systemd-resolved
 
-# Copy our new dnsmasq config file over
-sudo rsync ~/dnsmasq.conf /etc/dnsmasq.conf --remove-source-files 
-
 # Restart dnsmasq after updating the blacklist
-systemctl reload dnsmasq
+systemctl start dnsmasq
 
 
 # Download blocklist
