@@ -10,7 +10,7 @@ DNS_SERVER_2="149.112.112.112"
 DNSMASQ_CONFIG_PATH="/home/ssnseawolf/update-blacklist"
 
 # Download the dnsmasq config file from this repository
-sudo curl -SLso /etc/dnsmasq.conf
+curl -SLso /etc/dnsmasq.conf https://raw.githubusercontent.com/ssnseawolf/easydns-linux/master/dnsmasq.conf
 
 # Run this file as a cron job
 # Every other day cron: 0 0 2-30/2 * * /home/update-blacklist.sh
@@ -26,5 +26,5 @@ systemctl reload dnsmasq
 
 # Delete the old dnsmasq configuration file and make a new one with only the values we need.
 rm /etc/dnsmasq.conf
-curl -SLso /etc/dnsmasq.conf https://raw.githubusercontent.com/ssnseawolf/easydns-linux/master/dnsmasq.conf
+
 
