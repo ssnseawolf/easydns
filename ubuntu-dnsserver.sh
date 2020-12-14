@@ -40,3 +40,4 @@ server=DNS_SERVER_1                         # First outside DNS server we check 
 server=DNS_SERVER_2                         # Second outside DNS server we check when a request comes in
 
 conf-file=/etc/dnsmasq.conf
+
