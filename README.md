@@ -5,4 +5,4 @@ NOTE: If you ha
 
 1. Download and install Ubuntu Server
 2. curl https://raw.githubusercontent.com/ssnseawolf/easydns-linux/master/easydns-linux.sh > ~/easydns-linux.sh
-3. sudo sh easydns-linux.sh
+3. sudo sh ~/easydns-linux.sh

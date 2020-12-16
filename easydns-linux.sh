@@ -24,11 +24,12 @@ sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" ~/netplan.yaml
 sed -i "s/SERVER_IP_NETMASK_CIDR/$SERVER_IP_NETMASK_CIDR/" ~/netplan.yaml
 sed -i "s/GATEWAY_IP_ADDR/$GATEWAY_IP_ADDR/" ~/netplan.yaml
 
+# Download blocklist for first time
+BLACKLIST_URL="https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt"
+curl $BLACKLIST_URL | sudo tee /etc/dnsmasq.blacklist.txt > /dev/null
+
 # Download dnsmasq before we cut the network connection
 sudo apt install -y dnsmasq --download-only
-
-# systemd-resolved has a stub listener on port 53 by default. It must go
-echo "DNSStubListener=no" | sudo tee -a /etc/systemd/resolved.conf
 
 #sudo systemctl disable systemd-resolved
 sudo systemctl stop systemd-resolved
@@ -39,12 +40,6 @@ sudo apt install -y dnsmasq
 sudo rsync ~/dnsmasq.conf /etc/dnsmasq.conf --remove-source-files
 sudo rm /etc/netplan/*.yaml
 sudo rsync ~/netplan.yaml /etc/netplan/netplan.yaml
-
-# Download blocklist
-BLACKLIST_URL="https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt"
-
-# Download blocklist for first time
-curl $BLACKLIST_URL | sudo tee /etc/dnsmasq.blacklist.txt
 
 # Update ablock list as a cronjob
 # Create a cron job to update adlist every two days
