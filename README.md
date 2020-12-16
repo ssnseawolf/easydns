@@ -1,8 +1,14 @@
 # easydns-linux
 
-A simple script to get a full-blown DNS server up and running with as few clicks and little knowledge as possible.
-NOTE: If you ha
+A simple script to get a full-blown adblocking DNS server up and running with as few clicks and little knowledge as possible.
 
-1. Download and install Ubuntu Server
-2. curl https://raw.githubusercontent.com/ssnseawolf/easydns-linux/master/easydns-linux.sh > ~/easydns-linux.sh
-3. sudo sh ~/easydns-linux.sh
+This script is designed to be simple, basic and straightforward. It is not designed to be used in a variety of environments, only a fresh Ubuntu Server install or very similar.
+
+1. Download and install a fresh copy of Ubuntu Server, preferably on a virtual machine
+2. curl https://raw.githubusercontent.com/ssnseawolf/easydns-linux/master/easydns-linux.sh > ~/easydns-linux.sh && sudo sh ~/easydns-linux.sh
+3. Machine will reboot and you'll be rocking a brand new DNS server with adblocking with a default static IP of 192.168.0.4
+
+Machine will reboot with an adblocking DNS server for your network. If you need to use a different static IP or configure other options, change it at the top of the script beforehand.
+
+## Credit ##
+This software uses the exellent and free [notracking](https://github.com/notracking/hosts-blocklists) blocklist.
