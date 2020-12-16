@@ -15,7 +15,7 @@ curl https://raw.githubusercontent.com/ssnseawolf/easydns-linux/master/netplan.y
 # Replace variables in our newly downloaded config file
 sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" ~/dnsmasq.conf
 sed -i "s/DOMAIN/$DOMAIN/" ~/dnsmasq.conf
-sed -i "s/DOMAIN=None/ /" ~/dnsmasq.conf
+sed -i "s/domain=None/#domain=None/" ~/dnsmasq.conf
 sed -i "s/DNS_SERVER_1/$DNS_SERVER_1/" ~/dnsmasq.conf
 sed -i "s/DNS_SERVER_2/$DNS_SERVER_2/" ~/dnsmasq.conf
 
@@ -42,11 +42,9 @@ sudo rm /etc/netplan/*.yaml
 sudo rsync ~/netplan.yaml /etc/netplan/netplan.yaml
 
 # Update ablock list as a cronjob
-# Create a cron job to update adlist every two days
-CRONJOB="0 * * * * root    curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt"
+# Create a cron job to update adlist every day at midnight with a 1 hour random offset
+CRONJOB="0 1 * * * root    perl -le 'sleep rand 3600' && curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt"
 echo "$CRONJOB" | sudo tee -a /etc/crontab
 
-# Restart essential services
-sudo systemctl restart dnsmasq
-sudo netplan apply
+# Lazy machine restart
 reboot
