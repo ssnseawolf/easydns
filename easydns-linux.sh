@@ -15,7 +15,7 @@ curl https://raw.githubusercontent.com/ssnseawolf/easydns-linux/master/netplan.y
 # Replace variables in our newly downloaded config file
 sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" ~/dnsmasq.conf
 sed -i "s/DOMAIN/$DOMAIN/" ~/dnsmasq.conf
-sed -i "s/DOMAIN=None//" ~/dnsmasq.conf
+sed -i "s/DOMAIN=None/ /" ~/dnsmasq.conf
 sed -i "s/DNS_SERVER_1/$DNS_SERVER_1/" ~/dnsmasq.conf
 sed -i "s/DNS_SERVER_2/$DNS_SERVER_2/" ~/dnsmasq.conf
 
@@ -24,7 +24,14 @@ sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" ~/netplan.yaml
 sed -i "s/SERVER_IP_NETMASK_CIDR/$SERVER_IP_NETMASK_CIDR/" ~/netplan.yaml
 sed -i "s/GATEWAY_IP_ADDR/$GATEWAY_IP_ADDR/" ~/netplan.yaml
 
-# Install dnsmasq
+# Download dnsmasq before we cut the network connection
+sudo apt install -y dnsmasq --download-only
+
+# systemd-resolved has a stub listener on port 53 by default. It must go
+echo "DNSStubListener=no" | sudo tee -a /etc/systemd/resolved.conf
+
+sudo systemctl disable systemd-resolved
+sudo systemctl stop systemd-resolved
 sudo apt install -y dnsmasq
 
 # Apply our config and netplan files
@@ -33,23 +40,18 @@ sudo rm /etc/netplan/*.yaml
 sudo rsync ~/netplan.yaml /etc/netplan/netplan.yaml
 sudo netplan apply
 
-# systemd-resolved has a stub listener on port 53 by default. It must go
-echo "DNSStubListener=no" | sudo tee -a /etc/systemd/resolved.conf
-sudo systemctl restart systemd-resolved
+# Restart dnsmasq now that our config file is in place
+systemctl restart dnsmasq
 
-# Set IP address
-
-
-# Restart dnsmasq after updating the blacklist
-systemctl start dnsmasq
-
+# Create blacklist folder
+mkdir -m 777 ~/home/
 
 # Download blocklist
-sudo curl https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt > ~/dnsmasq.blacklist.txt
+BLACKLIST_URL="https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt"
+sudo curl $BLACKLIST_URL > /home/dnsmasq.blacklist.txt
 
-# Run this file as a cron job
-# Every other day cron: 0 0 2-30/2 * * /home/update-blacklist.sh
-
+# Update ablock list as a cronjob
 # Create a cron job to update adlist every two days
-# Formatted to look pretty in the cron list
-#CRONJOB=" 0 0 2-30/2 * * root    /home/update-blacklist.sh"
+USERNAME=$(id -u -n)
+CRONJOB=" 0 0 2-30/2 * * $USERNAME    curl $BlACKLIST_URL > ~/dnsmasq.blacklist.txt"
+sudo echo $CRONJOB > /etc/cron.d/adblock-update
