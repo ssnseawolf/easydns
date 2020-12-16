@@ -30,8 +30,9 @@ sudo apt install -y dnsmasq --download-only
 # systemd-resolved has a stub listener on port 53 by default. It must go
 echo "DNSStubListener=no" | sudo tee -a /etc/systemd/resolved.conf
 
-sudo systemctl disable systemd-resolved
+#sudo systemctl disable systemd-resolved
 sudo systemctl stop systemd-resolved
+sudo systemctl disable systemd-resolved
 sudo apt install -y dnsmasq
 
 # Apply our config and netplan files
@@ -39,19 +40,18 @@ sudo rsync ~/dnsmasq.conf /etc/dnsmasq.conf --remove-source-files
 sudo rm /etc/netplan/*.yaml
 sudo rsync ~/netplan.yaml /etc/netplan/netplan.yaml
 
-
-# Create blacklist folder
-mkdir -m 777 ~/home/
-
 # Download blocklist
 BLACKLIST_URL="https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt"
-#curl $BLACKLIST_URL > /home/dnsmasq.blacklist.txt | sudo sh
+
+# Download blocklist for first time
+curl $BLACKLIST_URL | sudo tee /etc/dnsmasq.blacklist.txt
 
 # Update ablock list as a cronjob
 # Create a cron job to update adlist every two days
-CRONJOB="0 * * * * root    curl $BLACKLIST_URL > /etc/dnsmasq.blacklist.txt"
+CRONJOB="0 * * * * root    curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt"
 echo "$CRONJOB" | sudo tee -a /etc/crontab
 
 # Restart essential services
-#systemctl reload dnsmasq
+sudo systemctl restart dnsmasq
 sudo netplan apply
+reboot
