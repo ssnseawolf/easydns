@@ -38,20 +38,20 @@ sudo apt install -y dnsmasq
 sudo rsync ~/dnsmasq.conf /etc/dnsmasq.conf --remove-source-files
 sudo rm /etc/netplan/*.yaml
 sudo rsync ~/netplan.yaml /etc/netplan/netplan.yaml
-sudo netplan apply
 
-# Restart dnsmasq now that our config file is in place
-systemctl restart dnsmasq
 
 # Create blacklist folder
 mkdir -m 777 ~/home/
 
 # Download blocklist
 BLACKLIST_URL="https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt"
-sudo curl $BLACKLIST_URL > /home/dnsmasq.blacklist.txt
+#curl $BLACKLIST_URL > /home/dnsmasq.blacklist.txt | sudo sh
 
 # Update ablock list as a cronjob
 # Create a cron job to update adlist every two days
-USERNAME=$(id -u -n)
-CRONJOB=" 0 0 2-30/2 * * $USERNAME    curl $BlACKLIST_URL > ~/dnsmasq.blacklist.txt"
-sudo echo $CRONJOB > /etc/cron.d/adblock-update
+CRONJOB="0 * * * * root    curl $BLACKLIST_URL > /etc/dnsmasq.blacklist.txt"
+echo "$CRONJOB" | sudo tee -a /etc/crontab
+
+# Restart essential services
+#systemctl reload dnsmasq
+sudo netplan apply
