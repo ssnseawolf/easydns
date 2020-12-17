@@ -1,15 +1,20 @@
 #!/bin/sh
 
 # User configuration
-SERVER_IP_ADDR="192.168.1.10"        # IP address to use for your server. Typically 192.168.0.x or 192.168.1.x
-SERVER_IP_NETMASK_CIDR="16"
-GATEWAY_IP_ADDR="192.168.0.1"
+SERVER_IP_ADDR=""        # IP address to use for your server. Typically 192.168.0.x or 192.168.1.x
+SERVER_IP_NETMASK_CIDR=""
+GATEWAY_IP_ADDR="1"
 DOMAIN="None"                       # If your home network has a domain name, like home.example.com, enter it here
 DNS_SERVER_1="9.9.9.9"
 DNS_SERVER_2="149.112.112.112"
 
 # Request default IP
-read -p "Static IP to set (default of 192.168.1.10):" SERVER_IP_ADDR
+read -p "Static IP to set. Default is 192.168.1.10: " SERVER_IP_ADDR
+read -p "CIDR subnet (no slash, i.e. 16 or 24). Default is 24: " SERVER_IP_NETMASK_CIDR
+read -p "Gateway IP. Default is 192.168.1.1: " GATEWAY_IP_ADDR
+SERVER_IP_ADDR=${SERVER_IP_ADDR:-192.168.1.10}
+SERVER_IP_NETMASK_CIDR=${SERVER_IP_NETMASK_CIDR:-24}
+GATEWAY_IP_ADDR=${GATEWAY_IP_ADDR:-192.168.1.1}
 
 # Download our new dnsmasq config file from our repository before we lose Internet connection
 curl https://raw.githubusercontent.com/ssnseawolf/easydns-linux/master/dnsmasq.conf > ~/dnsmasq.conf
