@@ -28,9 +28,20 @@ sed -i "s/GATEWAY_IP_ADDR/$GATEWAY_IP_ADDR/" ~/netplan.yaml
 BLACKLIST_URL="https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt"
 curl $BLACKLIST_URL | sudo tee /etc/dnsmasq.blacklist.txt > /dev/null
 
+# Make sure server is updated
+sudo apt update
+sudo apt upgrade -y
+
+# Enable automatic updates with automatic reboot
+export DEBIAN_FRONTEND=noninteractive # Turn off interactive mode first
+sudo dpkg-reconfigure --frontend noninteractive --priority=low unattended-upgrades
+echo 'Unattended-Upgrade::Automatic-Reboot "true";' | sudo tee -a /etc/apt/apt.conf.d/*auto-upgrades
+sudo apt install -y update-notifier-common # Must be installed for automatic reboot
+
 # Download dnsmasq before we cut the network connection
 sudo apt install -y dnsmasq --download-only
 
+# Cut our Internet as we switch off systemd-resolved
 #sudo systemctl disable systemd-resolved
 sudo systemctl stop systemd-resolved
 sudo systemctl disable systemd-resolved
