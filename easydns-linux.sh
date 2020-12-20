@@ -10,8 +10,8 @@ HOSTNAME=""
 
 # Request default IP
 read -p "Static IP [192.168.1.10] " SERVER_IP_ADDR
-read -p "CIDR subnet (no slash, i.e. 16 or 24) [24]: " SERVER_IP_NETMASK_CIDR
-read -p "Gateway IP. []192.168.1.1] " GATEWAY_IP_ADDR
+read -p "CIDR subnet (no slash, i.e. '16' or '24') [24]: " SERVER_IP_NETMASK_CIDR
+read -p "Gateway IP. [192.168.1.1] " GATEWAY_IP_ADDR
 read -p "Hostname [dns]: " HOSTNAME
 SERVER_IP_ADDR=${SERVER_IP_ADDR:-192.168.1.10}
 SERVER_IP_NETMASK_CIDR=${SERVER_IP_NETMASK_CIDR:-24}
@@ -48,8 +48,8 @@ curl $AUTOMATIC_UPDATE_URL | tee /etc/dnf/automatic.conf
 
 # Apply our config and netplan files
 nmcli connection modify eth0 IPv4.address $SERVER_IP_ADDR/$SERVER_IP_NETMASK_CIDR
-nmcli connection modify enp1s0 IPv4.gateway $GATEWAY_IP_ADDR
-nmcli connection modify enp1s0 IPv4.method manual
+nmcli connection modify eth0 IPv4.gateway $GATEWAY_IP_ADDR
+nmcli connection modify eth0 IPv4.method manual
 
 # Update adblock list daily
 CRONJOB="0 0 1 * * root    perl -le 'sleep rand 3600' && curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt && echo 'date Updated adblock list' >> /var/log/adblock-update.log"
