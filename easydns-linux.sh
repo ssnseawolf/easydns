@@ -7,9 +7,6 @@ GATEWAY_IP_ADDR="1"
 DNS_SERVER_1="9.9.9.9"
 DNS_SERVER_2="149.112.112.112"
 
-# Sudo
-su -
-
 # Request default IP
 read -p "Static IP to set. Default is 192.168.1.10: " SERVER_IP_ADDR
 read -p "CIDR subnet (no slash, i.e. 16 or 24). Default is 24: " SERVER_IP_NETMASK_CIDR
@@ -43,6 +40,7 @@ dnf install -y dnsmasq
 # Make sure server is updated and install bind-utils (optional, but nice for dig)
 dnf -y upgrade
 dnf install -y bind-utils
+dnf install -y nano
 
 # Enable automatic updates with automatic reboot
 dnf install -y dnf-automatic
