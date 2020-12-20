@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # User configuration
 SERVER_IP_ADDR=""        # IP address to use for your server. Typically 192.168.0.x or 192.168.1.x
