@@ -52,7 +52,7 @@ nmcli connection modify eth0 IPv4.gateway $GATEWAY_IP_ADDR
 nmcli connection modify eth0 IPv4.method manual
 
 # Update adblock list daily
-CRONJOB="0 0 1 * * root    perl -le 'sleep rand 3600' && curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt && echo 'date Updated adblock list' >> /var/log/adblock-update.log"
+CRONJOB="0 0 1 * * root    perl -le 'sleep rand 3600' && curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt && echo $(date -u) Updated adblock list >> /var/log/adblock-update.log"
 crontab -l > mycron
 echo "$CRONJOB" >> mycron
 crontab mycron
