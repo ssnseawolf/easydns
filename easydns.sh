@@ -22,6 +22,7 @@ HOSTNAME=${HOSTNAME:-dns}
 curl https://raw.githubusercontent.com/ssnseawolf/easydns/master/dnsmasq.conf > ~/dnsmasq.conf
 curl https://raw.githubusercontent.com/ssnseawolf/easydns/master/netplan.yaml > ~/netplan.yaml
 
+
 # Replace variables in our newly downloaded config file
 sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" ~/dnsmasq.conf
 sed -i "s/HOSTNAME/$HOSTNAME/" ~/dnsmasq.conf
@@ -35,8 +36,13 @@ sed -i "s/SERVER_IP_NETMASK_CIDR/$SERVER_IP_NETMASK_CIDR/" ~/netplan.yaml
 sed -i "s/GATEWAY_IP_ADDR/$GATEWAY_IP_ADDR/" ~/netplan.yaml
 
 # Download blocklist for first time
-BLACKLIST_URL="https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt"
-curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt > /dev/null
+BLACKLIST_URLS="https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt"
+curl $BLACKLIST_URLS | tee /etc/dnsmasq.blacklist.txt > /dev/null
+
+# Only for dnsmasq <2.80
+BLACKLIST_IPS="https://raw.githubusercontent.com/notracking/hosts-blocklists/master/dnsmasq/dnsmasq.blacklist.txt"
+curl $BLACKLIST_IPS | tee /etc/dnsmasq.hostnames.txt > /dev/null
+
 
 # Make sure server is updated
 dnf -y upgrade
@@ -61,11 +67,14 @@ nmcli connection modify eth0 IPv4.gateway $GATEWAY_IP_ADDR
 nmcli connection modify eth0 IPv4.method manual
 
 # Update adblock list daily
-CRONJOB="0 0 1 * * root    perl -le 'sleep rand 3600' && curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt"
+CRONJOB="0 0 1 * * root    perl -le 'sleep rand 3600' && curl $BLACKLIST_URLS | tee /etc/dnsmasq.blacklist.txt"
 crontab -l > cronlist
 echo "$CRONJOB" >> cronlist
 crontab cronlist
 rm cronlist
+
+# Swap out the built-in systemd-resolved DNS
+systemctl disable systemd-resolved
 
 # We lazy
 reboot
