@@ -55,7 +55,7 @@ dnf install -y dnf-automatic
 AUTOMATIC_UPDATE_URL="https://raw.githubusercontent.com/ssnseawolf/easydns/master/automatic.conf"
 curl $AUTOMATIC_UPDATE_URL | tee /etc/dnf/automatic.conf
 
-# Apply our config and netplan files
+# Configure our network settings
 nmcli connection modify eth0 IPv4.address $SERVER_IP_ADDR/$SERVER_IP_NETMASK_CIDR
 nmcli connection modify eth0 IPv4.gateway $GATEWAY_IP_ADDR
 nmcli connection modify eth0 IPv4.method manual
