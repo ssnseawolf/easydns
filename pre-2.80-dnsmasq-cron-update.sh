@@ -25,8 +25,8 @@ listdir=/etc
 ########################
 
 echo -n "[+] Downloading notracking updates: "
-curl --silent -o $listdir/hostnames.txt https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt
-curl --silent -o $listdir/domains.txt https://raw.githubusercontent.com/notracking/hosts-blocklists/master/domains.txt
+curl --silent -o $listdir/dnsmasq.hostnames.txt https://raw.githubusercontent.com/notracking/hosts-blocklists/master/hostnames.txt
+curl --silent -o $listdir/dnsmasq.domains.txt https://raw.githubusercontent.com/notracking/hosts-blocklists/master/domains.txt
 echo "OK!"
 
 echo -n "[+] Applying whitelist: "
@@ -36,13 +36,13 @@ while IFS= read -r line; do # IFS= to prevent read from remove leading or tailin
   then
     line="${line%%[[:cntrl:]]}" # removes tailing newline
 
-    grep -v "${line}" $listdir/hostnames.txt > $listdir/hostnames.tmp.txt
-    grep -v "${line}" $listdir/domains.txt > $listdir/domains.tmp.txt
+    grep -v "${line}" $listdir/dnsmasq.hostnames.txt > $listdir/dnsmasq.hostnames.tmp.txt
+    grep -v "${line}" $listdir/dnsmasq.domains.txt > $listdir/dnsmasq.domains.tmp.txt
 
-    mv $listdir/hostnames.tmp.txt $listdir/dnsmasq.hostnames.txt
-    mv $listdir/domains.tmp.txt $listdir/dnsmasq.domains.txt
+    mv $listdir/dnsmasq.hostnames.tmp.txt $listdir/dnsmasq.hostnames.txt
+    mv $listdir/dnsmasq.domains.tmp.txt $listdir/dnsmasq.domains.txt
   fi
-done < $listdir/whitelist.txt
+done < $listdir/dnsmasq.whitelist.txt
 echo "OK!"
 
 echo -n "[+] Restarting Dnsmasq: "
