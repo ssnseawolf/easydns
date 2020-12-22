@@ -63,6 +63,10 @@ nmcli connection modify eth0 IPv4.address $SERVER_IP_ADDR/$SERVER_IP_NETMASK_CID
 nmcli connection modify eth0 IPv4.gateway $GATEWAY_IP_ADDR
 nmcli connection modify eth0 IPv4.method manual
 
+# Set our nameserver in resolv.conf (no-resolv flag doesn't work in 2.79 - Try again in RHEL 9?)
+echo "nameserver $DNS_SERVER_1" | tee /etc/resolv.conf
+echo "nameserver $DNS_SERVER_2" | tee -a /etc/resolv.conf
+
 # Update adblock list daily
 # Uncomment for dnsmasq >=2.80 (RHEL 9?)
 # CRONJOB="0 0 1 * * root    perl -le 'sleep rand 3600' && curl $BLACKLIST_URLS | tee /etc/dnsmasq.blacklist.txt"
