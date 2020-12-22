@@ -24,6 +24,8 @@ curl https://raw.githubusercontent.com/ssnseawolf/easydns/master/netplan.yaml > 
 
 # Replace variables in our newly downloaded config file
 sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" ~/dnsmasq.conf
+sed -i "s/HOSTNAME/$HOSTNAME/" ~/dnsmasq.conf
+sed -i "s/domain=DOMAIN//" ~/dnsmasq.conf
 sed -i "s/DNS_SERVER_1/$DNS_SERVER_1/" ~/dnsmasq.conf
 sed -i "s/DNS_SERVER_2/$DNS_SERVER_2/" ~/dnsmasq.conf
 
