@@ -47,6 +47,9 @@ dnf install -y dnsmasq      # DNS server
 systemctl enable dnsmasq    # Enable dnsmasq on startup
 cat ~/dnsmasq.conf > /etc/dnsmasq.conf
 
+# Punch a hole through the firewall for DNS
+firewall-cmd add-service=dns --permanent
+
 # Enable automatic updates with automatic reboot
 dnf install -y dnf-automatic
 AUTOMATIC_UPDATE_URL="https://raw.githubusercontent.com/ssnseawolf/easydns/master/automatic.conf"
