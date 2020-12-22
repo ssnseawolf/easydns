@@ -38,8 +38,12 @@ curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt > /dev/null
 
 # Make sure server is updated
 dnf -y upgrade
-dnf install -y dnsmasq      # DNS server
 dnf install -y bind-utils   # For dig utility, not necessary
+
+# Configure dnsmasq
+dnf install -y dnsmasq      # DNS server
+systemctl enable dnsmasq    # Enable dnsmasq on startup
+cat ~/dnsmasq.conf > /etc/dnsmasq.conf
 
 # Enable automatic updates with automatic reboot
 dnf install -y dnf-automatic
