@@ -14,7 +14,7 @@
 #  - Download this file to: /etc/cron.daily/adblocking_update
 #  - Mark it as executable: sudo chmod +x /etc/cron.daily/adblocking_update
 #  - Update the CONFIG section in this script: sudo nano /etc/cron.daily/adblocking_update
-#  - Do a test run: sudo /etc/cron.daily/adblocking_update
+#  - Do a test run: sudo /etc/cron.daily/adblock_update
 #
 # WHITELISTING
 # Any line in the blocklist that contains one of the lines in the whitelist will be automatically removed.
