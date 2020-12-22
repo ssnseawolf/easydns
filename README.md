@@ -11,4 +11,4 @@ This script is designed to be simple, basic and straightforward. It is not desig
 Machine will reboot with an adblocking DNS server for your network. If you need to use a different static IP or configure other options, change it at the top of the script beforehand.
 
 ## Credit ##
-This software uses the exellent and free [notracking](https://github.com/notracking/hosts-blocklists) blocklist.
+This software uses the exellent [notracking](https://github.com/notracking/hosts-blocklists) blocklist.
