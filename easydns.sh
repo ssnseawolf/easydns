@@ -19,9 +19,6 @@ SERVER_IP_NETMASK_CIDR=${SERVER_IP_NETMASK_CIDR:-24}
 GATEWAY_IP_ADDR=${GATEWAY_IP_ADDR:-192.168.1.1}
 HOSTNAME=${HOSTNAME:-dns}
 
-# Download our new dnsmasq config file from our repository
-curl https://raw.githubusercontent.com/ssnseawolf/easydns/master/dnsmasq.conf > ~/dnsmasq.conf
-
 # Replace variables in our newly downloaded config file
 sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" ~/dnsmasq.conf
 sed -i "s/HOSTNAME/$HOSTNAME/" ~/dnsmasq.conf
@@ -50,7 +47,8 @@ dnf install -y bind-utils   # For dig utility, not necessary
 # Configure dnsmasq
 dnf install -y dnsmasq      # DNS server
 systemctl enable dnsmasq    # Enable dnsmasq on startup
-cat ~/dnsmasq.conf > /etc/dnsmasq.conf
+$DNSMASQ_CONF =https://raw.githubusercontent.com/ssnseawolf/easydns/master/dnsmasq.conf
+curl $DNSMASQ_CONF | tee /etc/dnsmasq.conf > /dev/null
 
 # Punch a hole through the firewall for DNS
 firewall-cmd --add-service=dns --permanent
