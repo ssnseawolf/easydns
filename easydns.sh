@@ -64,6 +64,7 @@ nmcli connection modify eth0 IPv4.gateway $GATEWAY_IP_ADDR
 nmcli connection modify eth0 IPv4.method manual
 
 # Set our nameserver in resolv.conf (no-resolv flag doesn't work in 2.79 - Try again in RHEL 9?)
+echo "nameserver 127.0.0.1" | tee /etc/resolv.conf
 echo "nameserver $DNS_SERVER_1" | tee /etc/resolv.conf
 echo "nameserver $DNS_SERVER_2" | tee -a /etc/resolv.conf
 
