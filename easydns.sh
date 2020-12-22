@@ -40,7 +40,7 @@ dnf install -y bind-utils   # For dig utility, not necessary
 # Configure dnsmasq
 dnf install -y dnsmasq      # DNS server
 systemctl enable dnsmasq    # Enable dnsmasq on startup
-$DNSMASQ_CONF =https://raw.githubusercontent.com/ssnseawolf/easydns/master/dnsmasq.conf
+DNSMASQ_CONF=https://raw.githubusercontent.com/ssnseawolf/easydns/master/dnsmasq.conf
 curl $DNSMASQ_CONF | tee /etc/dnsmasq.conf > /dev/null
 sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" /etc/dnsmasq.conf
 sed -i "s/HOSTNAME/$HOSTNAME/" /etc/dnsmasq.conf
