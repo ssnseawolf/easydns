@@ -30,7 +30,7 @@ curl --silent -o $listdir/dnsmasq.domains.txt https://raw.githubusercontent.com/
 echo "OK!"
 
 echo -n "[+] Applying whitelist: "
-touch $listdir/whitelist.txt # create empty whitelist in case it does not exist
+touch $listdir/dnsmasq.whitelist.txt # create empty whitelist in case it does not exist
 while IFS= read -r line; do # IFS= to prevent read from remove leading or tailing spaces
   if [[ $line == *"."* ]] # line must at least contain a '.' to avoid simple mistakes
   then
