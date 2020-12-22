@@ -11,10 +11,10 @@
 # HOWTO
 # For Debian based systems
 #  - Install curl: sudo apt install curl
-#  - Download this file to: /etc/cron.daily/adblocking_update
-#  - Mark it as executable: sudo chmod +x /etc/cron.daily/adblocking_update
-#  - Update the CONFIG section in this script: sudo nano /etc/cron.daily/adblocking_update
-#  - Do a test run: sudo /etc/cron.daily/adblock_update
+#  - Download this file to: /etc/cron.daily/update_adblock
+#  - Mark it as executable: sudo chmod +x /etc/cron.daily/update_adblock
+#  - Update the CONFIG section in this script: sudo nano /etc/cron.daily/update_adblock
+#  - Do a test run: sudo /etc/cron.daily/update_adblock
 #
 # WHITELISTING
 # Any line in the blocklist that contains one of the lines in the whitelist will be automatically removed.

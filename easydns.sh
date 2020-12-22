@@ -30,8 +30,8 @@ BLACKLIST_DOMAINS="https://raw.githubusercontent.com/notracking/hosts-blocklists
 UPDATE_SCRIPT_URL="https://raw.githubusercontent.com/ssnseawolf/easydns/master/pre-2.80-dnsmasq-cron-update.sh"
 curl $BLACKLIST_HOSTNAMES | tee /etc/dnsmasq.hostnames.txt > /dev/null
 curl $BLACKLIST_DOMAINS | tee /etc/dnsmasq.domains.txt > /dev/null
-curl $UPDATE_SCRIPT_URL | tee /etc/cron.daily/adblocking_update > /dev/null # Use the wonderful notracking update script
-chmod +x /etc/cron.daily/adblock_update
+curl $UPDATE_SCRIPT_URL | tee /etc/cron.daily/update_adblock > /dev/null # Use the wonderful notracking update script
+chmod +x /etc/cron.daily/update_adblock
 
 # Make sure server is updated
 dnf -y upgrade
