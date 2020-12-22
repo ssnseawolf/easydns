@@ -77,8 +77,9 @@ echo "nameserver $DNS_SERVER_2" | tee -a /etc/resolv.conf
 # rm cronlist
 
 
-# Disable the built-in systemd-resolved DNS
+# Disable the built-in systemd-resolved DNS and remove ssh
 systemctl disable systemd-resolved
+systemctl disable sshd
 
 # We lazy
 reboot
