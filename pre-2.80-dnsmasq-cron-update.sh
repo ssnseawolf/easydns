@@ -46,5 +46,5 @@ done < $listdir/dnsmasq.whitelist.txt
 echo "OK!"
 
 echo -n "[+] Restarting Dnsmasq: "
-service dnsmasq restart
+systemctl restart dnsmasq
 echo "OK!"
