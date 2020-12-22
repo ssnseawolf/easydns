@@ -39,8 +39,8 @@ while IFS= read -r line; do # IFS= to prevent read from remove leading or tailin
     grep -v "${line}" $listdir/hostnames.txt > $listdir/hostnames.tmp.txt
     grep -v "${line}" $listdir/domains.txt > $listdir/domains.tmp.txt
 
-    mv $listdir/hostnames.tmp.txt $listdir/hostnames.txt
-    mv $listdir/domains.tmp.txt $listdir/domains.txt
+    mv $listdir/hostnames.tmp.txt $listdir/dnsmasq.hostnames.txt
+    mv $listdir/domains.tmp.txt $listdir/dnsmasq.domains.txt
   fi
 done < $listdir/whitelist.txt
 echo "OK!"
