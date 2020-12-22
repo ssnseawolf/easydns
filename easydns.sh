@@ -53,7 +53,7 @@ systemctl enable dnsmasq    # Enable dnsmasq on startup
 cat ~/dnsmasq.conf > /etc/dnsmasq.conf
 
 # Punch a hole through the firewall for DNS
-firewall-cmd add-service=dns --permanent
+firewall-cmd --add-service=dns --permanent
 
 # Enable automatic system updates with automatic reboot
 dnf install -y dnf-automatic
