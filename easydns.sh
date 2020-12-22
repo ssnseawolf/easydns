@@ -62,10 +62,10 @@ nmcli connection modify eth0 IPv4.method manual
 
 # Update adblock list daily
 CRONJOB="0 0 1 * * root    perl -le 'sleep rand 3600' && curl $BLACKLIST_URL | tee /etc/dnsmasq.blacklist.txt"
-crontab -l > mycron
-echo "$CRONJOB" >> mycron
-crontab mycron
-rm mycron
+crontab -l > cronlist
+echo "$CRONJOB" >> cronlist
+crontab cronlist
+rm cronlist
 
 # We lazy
 reboot
