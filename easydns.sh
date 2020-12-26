@@ -4,8 +4,8 @@
 SERVER_IP_ADDR=""        # IP address to use for your server. Typically 192.168.0.x or 192.168.1.x
 SERVER_IP_NETMASK_CIDR=""
 GATEWAY_IP_ADDR="1"
-DNS_SERVER_1="9.9.9.9"
-DNS_SERVER_2="149.112.112.112"
+DNS_SERVER_1="1.1.1.1"
+DNS_SERVER_2="1.0.0.1"
 HOSTNAME=""
 
 
@@ -76,6 +76,8 @@ echo "nameserver $DNS_SERVER_2" | tee -a /etc/resolv.conf
 # crontab cronlist
 # rm cronlist
 
+# Log out after an hour
+echo "TIMEOUT=3600" | tee ~/.bashrc
 
 # Disable the built-in systemd-resolved DNS and remove ssh
 systemctl disable systemd-resolved
