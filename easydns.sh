@@ -6,18 +6,21 @@ SERVER_IP_NETMASK_CIDR=""
 GATEWAY_IP_ADDR="1"
 DNS_SERVER_1="1.1.1.1"
 DNS_SERVER_2="1.0.0.1"
-HOSTNAME=""
+AD_DOMAIN_NAME=""
+AD_DC_IP=""
 
 
 # Request default IP
 read -p "Static IP [192.168.1.10] " SERVER_IP_ADDR
 read -p "CIDR subnet (no slash, i.e. '16' or '24') [24]: " SERVER_IP_NETMASK_CIDR
 read -p "Gateway IP. [192.168.1.1] " GATEWAY_IP_ADDR
-read -p "Hostname [dns]: " HOSTNAME
+echo "Leave the next two prompts blank if you are not using Active Directory."
+echo "If you're not sure, it's a good bet that you are not using Active Directory."
+read -p "AD hostname [None]: " AD_DOMAIN_NAME
+read -p "AD DC IP [None]:" AD_DC_IP
 SERVER_IP_ADDR=${SERVER_IP_ADDR:-192.168.1.10}
 SERVER_IP_NETMASK_CIDR=${SERVER_IP_NETMASK_CIDR:-24}
 GATEWAY_IP_ADDR=${GATEWAY_IP_ADDR:-192.168.1.1}
-HOSTNAME=${HOSTNAME:-dns}
 
 # Download blocklist for first time
 # Uncomment for dnsmasq >=2.80 (RHEL 9?)
@@ -43,10 +46,11 @@ systemctl enable dnsmasq    # Enable dnsmasq on startup
 DNSMASQ_CONF=https://raw.githubusercontent.com/ssnseawolf/easydns/master/dnsmasq.conf
 curl $DNSMASQ_CONF | tee /etc/dnsmasq.conf > /dev/null
 sed -i "s/SERVER_IP_ADDR/$SERVER_IP_ADDR/" /etc/dnsmasq.conf
-sed -i "s/HOSTNAME/$HOSTNAME/" /etc/dnsmasq.conf
-sed -i "s/domain=DOMAIN//" /etc/dnsmasq.conf
 sed -i "s/DNS_SERVER_1/$DNS_SERVER_1/" /etc/dnsmasq.conf
 sed -i "s/DNS_SERVER_2/$DNS_SERVER_2/" /etc/dnsmasq.conf
+sed -i "s/AD_DOMAIN_NAME/$AD_DOMAIN_NAME/" /etc/dnsmasq.conf
+sed -i "s/AD_DC_IP/$AD_DC_IP/" /etc/dnsmasq.conf
+sed -i "s/server=\/AD_DOMAIN_NAME\/AD_DC_IP\///" /etc/dnsmasq.conf
 
 # Punch a hole through the firewall for DNS
 firewall-cmd --add-service=dns --permanent
