@@ -60,7 +60,11 @@ dnf install -y dnf-automatic
 
 # Replace variables in our newly downloaded config file
 AUTOMATIC_UPDATE_URL="https://raw.githubusercontent.com/ssnseawolf/easydns/master/automatic.conf"
-curl $AUTOMATIC_UPDATE_URL | tee /etc/cron.daily/automatic.conf
+curl $AUTOMATIC_UPDATE_URL | tee /etc/dnf/automatic.conf
+
+# Finally, enable automatic updates
+systemctl enable dnf-automatic-install.timer
+systemctl start dnf-automatic-install.timer
 
 # Configure our network settings
 nmcli connection modify eth0 IPv4.address $SERVER_IP_ADDR/$SERVER_IP_NETMASK_CIDR
